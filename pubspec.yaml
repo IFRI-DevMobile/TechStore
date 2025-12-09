@@ -29,6 +29,8 @@ dependencies:
   get:
   google_fonts:
   another_flutter_splash_screen:
+  pinput: ^6.0.1
+  flutter_svg: ^2.2.3
 
 
 dev_dependencies:
