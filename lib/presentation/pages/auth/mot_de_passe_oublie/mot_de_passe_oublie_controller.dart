@@ -1,15 +1,11 @@
-// lib/controllers/forgot_password_controller.dart
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:code_initial/navigation.dart';
-import 'dart:async'; // Pour simuler une requête réseau
 
 class MotDePasseOublieController extends GetxController {
-  // Contrôleur pour le champ de saisie d'e-mail
   final TextEditingController emailController = TextEditingController();
-
-  // Variable réactive pour gérer l'état de chargement du bouton
-  var isLoading = false.obs;
+  final RxBool isLoading = false.obs;
 
   @override
   void onClose() {
@@ -17,9 +13,8 @@ class MotDePasseOublieController extends GetxController {
     super.onClose();
   }
 
-  // Fonction appelée lorsque l'utilisateur appuie sur le bouton "Recevoir le code"
   Future<void> sendCode() async {
-    final email = emailController.text;
+    final email = emailController.text.trim();
 
     if (!GetUtils.isEmail(email)) {
       Get.snackbar(
@@ -35,10 +30,9 @@ class MotDePasseOublieController extends GetxController {
     isLoading.value = true;
 
     try {
-      // Remplacer cette partie par le véritable appel HTTP vers votre backend
-      debugPrint("Appel API pour envoyer le code à $email");
-      await Future.delayed(Duration(seconds: 2)); // Simule un délai réseau de 2 secondes
-      // Si l'appel API réussit :
+      // Simulation d'appel API
+      await Future.delayed(const Duration(seconds: 2));
+
       Get.snackbar(
         "Succès",
         "Code envoyé à $email !",
@@ -47,13 +41,12 @@ class MotDePasseOublieController extends GetxController {
         colorText: Colors.white,
       );
 
-      Get.offNamed(
-          Routes.OTPCODE,
-          arguments: {'email': email}
+      // Navigation vers la page OTP avec l'email en paramètre
+      Get.toNamed(
+        Routes.OTPCODE,
+        arguments: {'email': email},
       );
-
     } catch (e) {
-      // Gérer les erreurs réseau ou backend
       Get.snackbar(
         "Erreur",
         "Une erreur est survenue lors de l'envoi.",
@@ -62,14 +55,14 @@ class MotDePasseOublieController extends GetxController {
         colorText: Colors.white,
       );
     } finally {
-      isLoading.value = false; // Arrête l'indicateur de chargement
+      isLoading.value = false;
     }
   }
 }
-class MotDePasseOublieBinding extends Bindings{
+
+class MotDePasseOublieBinding extends Bindings {
   @override
   void dependencies() {
-    // TODO: implement dependencies
-    Get.lazyPut(()=>MotDePasseOublieController());
+    Get.lazyPut(() => MotDePasseOublieController());
   }
 }
