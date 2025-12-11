@@ -23,7 +23,7 @@ class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: "Badgee",
+      title: "TechStore",
       initialRoute: initialRoute,
       getPages: Nav.routes,
       debugShowCheckedModeBanner: false,
