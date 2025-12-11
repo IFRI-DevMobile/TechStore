@@ -92,16 +92,7 @@ class AccueilPage extends GetView<AccueilController> {
                 style: TextStyle(fontSize: 16),
               ),
             ),
-            IconButton(
-              icon: Icon(
-                Icons.tune,
-                color: const Color(0xFF5B67FF),
-                size: 22,
-              ),
-              onPressed: () {
-                // Action filtre
-              },
-            ),
+
             const SizedBox(width: 5),
           ],
         ),
