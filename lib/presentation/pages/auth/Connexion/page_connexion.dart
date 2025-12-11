@@ -105,7 +105,7 @@ class _PageConnexionState extends State<PageConnexion> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 37, 28, 217),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                     elevation: 0,
                   ),
@@ -113,7 +113,6 @@ class _PageConnexionState extends State<PageConnexion> {
                     "Se connecter",
                     style: TextStyle(
                       color: Colors.white,
-                      fontFamily: "Poppins",
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
                     ),
@@ -160,4 +159,3 @@ class _PageConnexionState extends State<PageConnexion> {
     );
   }
 }
-
