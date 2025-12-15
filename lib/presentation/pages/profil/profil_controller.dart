@@ -37,7 +37,7 @@ class ProfilController extends GetxController {
   /// Déconnexion
   void logout() {
     print('👋 Déconnexion...');
-    Get.offAllNamed('/register'); // Retour à la page d'inscription
+    Get.offAllNamed('/inscription'); // Retour à la page d'inscription
   }
 
   @override
