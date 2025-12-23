@@ -29,14 +29,14 @@ class _PageInscriptionState extends State<PageInscription> {
                 const SizedBox(height: 60),
                 Image.asset(
                   "design/assets/NotreLogo.png",
-                  width: 100,
-                  height: 100,
+                  width: 60,
+                  height: 60,
                 ),
                 const Text(
                   "TechStore",
                   style: TextStyle(
                     fontFamily: "Roboto",
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.bold,
                     fontSize: 24,
                     letterSpacing: 0.5,
                   ),
@@ -48,7 +48,7 @@ class _PageInscriptionState extends State<PageInscription> {
                   hintText: "Nom complet",
                   prefixIcon: Icons.person_outline,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 22),
 
                 // E-mail
                 const CustomTextField(
@@ -56,7 +56,7 @@ class _PageInscriptionState extends State<PageInscription> {
                   prefixIcon: Icons.email_outlined,
                   keyboardType: TextInputType.emailAddress,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 22),
 
                 // Mot de passe
                 CustomTextField(
@@ -77,7 +77,7 @@ class _PageInscriptionState extends State<PageInscription> {
                     },
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 22),
 
                 // Confirmer le mot de passe
                 CustomTextField(
@@ -99,7 +99,7 @@ class _PageInscriptionState extends State<PageInscription> {
                   ),
                 ),
 
-                const SizedBox(height: 24),
+                const SizedBox(height: 36),
                 SizedBox(
                   width: double.infinity,
                   height: 48,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'catalogue_controller.dart';
+import '/utils/custom_search_bar.dart';
+import '/utils/product_card.dart';
 
 class CataloguePage extends GetView<CatalogueController> {
   const CataloguePage({super.key});
@@ -72,39 +74,8 @@ class CataloguePage extends GetView<CatalogueController> {
   }
 
   Widget _buildSearchBar() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: TextField(
-        onChanged: controller.updateSearch,
-        decoration: InputDecoration(
-          hintText: 'ex : iPhone 15 pro max',
-          hintStyle: TextStyle(
-            color: Colors.grey[400],
-            fontSize: 14,
-            fontFamily: 'Poppins',
-            fontStyle: FontStyle.italic,
-          ),
-          prefixIcon: Icon(Icons.search, color: Colors.grey[400], size: 22),
-          filled: true,
-          fillColor: Colors.white,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-            borderSide: const BorderSide(
-              color: Color.fromARGB(121, 51, 51, 51),
-              width: 2,
-            ),
-          ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        ),
-      ),
+    return CustomSearchBar(
+      onChanged: controller.updateSearch,
     );
   }
 
@@ -210,204 +181,63 @@ class CataloguePage extends GetView<CatalogueController> {
   List<Widget> _getProductsForCategory(String category) {
     if (category == 'Smartphones') {
       return [
-        _buildProductCard(
-          'design/assets/Iphone14.png',
-          'iPhone 14 Pro Max 1To | 16Gb RAM',
-          4.8,
-          '702.500',
-          'Livraison à partir de 1.700 F/km',
-          false,
+        ProductCard(
+          imagePath: 'design/assets/Iphone14.png',
+          title: 'iPhone 14 Pro Max 1To | 16Gb RAM',
+          rating: 4.8,
+          price: '702.500',
+          deliveryInfo: 'Livraison à partir de 1.700 F/km',
+          freeDelivery: false,
         ),
-        _buildProductCard(
-          'design/assets/SamsungA16.png',
-          'Samsung Galaxy A16 5G A Series',
-          3.7,
-          '80.800',
-          'Livraison à partir de 1.700 F/km',
-          false,
+        ProductCard(
+          imagePath: 'design/assets/SamsungA16.png',
+          title: 'Samsung Galaxy A16 5G A Series',
+          rating: 3.7,
+          price: '80.800',
+          deliveryInfo: 'Livraison à partir de 1.700 F/km',
+          freeDelivery: false,
         ),
       ];
     } else if (category == 'Ordinateurs') {
       return [
-        _buildProductCard(
-          'design/assets/Victus15.png',
-          'HP Victus 15 RTX 2050 | 16GB DDR5',
-          4.8,
-          '702.500',
-          'Livraison gratuite',
-          true,
+        ProductCard(
+          imagePath: 'design/assets/Victus15.png',
+          title: 'HP Victus 15 RTX 2050 | 16GB DDR5',
+          rating: 4.8,
+          price: '702.500',
+          deliveryInfo: 'Livraison gratuite',
+          freeDelivery: true,
         ),
-        _buildProductCard(
-          'design/assets/Macbook.png',
-          'Apple 2025 MacBook Air 256GB SSD',
-          4.8,
-          '604.800',
-          'Livraison à partir de 2.500 F/km',
-          false,
+        ProductCard(
+          imagePath: 'design/assets/Macbook.png',
+          title: 'Apple 2025 MacBook Air 256GB SSD',
+          rating: 4.8,
+          price: '604.800',
+          deliveryInfo: 'Livraison à partir de 2.500 F/km',
+          freeDelivery: false,
         ),
       ];
     } else if (category == 'Consoles de Jeux') {
       return [
-        _buildProductCard(
-          'design/assets/Ps4.png',
-          'Sony PlayStation 4 1TB Gaming Console',
-          4.8,
-          '101.500',
-          'Livraison gratuite',
-          true,
+        ProductCard(
+          imagePath: 'design/assets/Ps4.png',
+          title: 'Sony PlayStation 4 1TB Gaming Console',
+          rating: 4.8,
+          price: '101.500',
+          deliveryInfo: 'Livraison gratuite',
+          freeDelivery: true,
         ),
-        _buildProductCard(
-          'design/assets/Ps5.png',
-          'PlayStation 5 1TB | Fortnite Flowering',
-          4.8,
-          '485.800',
-          'Livraison à partir de 3.000 F/km',
-          false,
+        ProductCard(
+          imagePath: 'design/assets/Ps5.png',
+          title: 'PlayStation 5 1TB | Fortnite Flowering',
+          rating: 4.8,
+          price: '485.800',
+          deliveryInfo: 'Livraison à partir de 3.000 F/km',
+          freeDelivery: false,
         ),
       ];
     }
     return [];
-  }
-
-  Widget _buildProductCard(
-    String imagePath,
-    String name,
-    double rating,
-    String price,
-    String deliveryInfo,
-    bool freeDelivery,
-  ) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Colors.grey[100],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.asset(
-                  imagePath,
-                  width: double.infinity,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Center(
-                      child: Icon(
-                        Icons.image_not_supported,
-                        color: Colors.grey[400],
-                        size: 40,
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
-                    fontFamily: 'Roboto',
-                    color: Colors.black,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 6),
-                Row(
-                  children: [
-                    ...List.generate(5, (index) {
-                      if (index < rating.floor()) {
-                        return const Icon(Icons.star, color: Color(0xFFFFC107), size: 14);
-                      } else if (index < rating) {
-                        return const Icon(Icons.star_half, color: Color(0xFFFFC107), size: 14);
-                      } else {
-                        return Icon(Icons.star_border, color: Colors.grey[400], size: 14);
-                      }
-                    }),
-                    const SizedBox(width: 4),
-                    Text(
-                      '($rating)',
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontStyle: FontStyle.italic,
-                        color: Colors.grey[600],
-                        fontFamily: 'Roboto',
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: price,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontFamily: 'Poppins',
-                        ),
-                      ),
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.top,
-                        child: Transform.translate(
-                          offset: const Offset(1, -4),
-                          child: Text(
-                            'XOF',
-                            style: TextStyle(
-                              fontSize: 8,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey[600],
-                              fontFamily: 'Poppins',
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  deliveryInfo,
-                  style: TextStyle(
-                    fontSize: 9,
-                    color: freeDelivery
-                        ? const Color(0xFF4CAF50)
-                        : Colors.grey[600],
-                    fontFamily: 'Poppins',
-                    fontWeight: freeDelivery ? FontWeight.w600 : FontWeight.normal,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   Widget _buildBottomNavBar() {
@@ -428,9 +258,58 @@ class CataloguePage extends GetView<CatalogueController> {
         children: [
           _buildNavItem(Icons.home_outlined, 'Accueil', false),
           _buildNavItem(Icons.storefront, 'Catalogue', true),
-          _buildNavItem(Icons.person_outline, 'Mon profil', false),
+          _buildAvatarNavItem('Mon profil', false),
           _buildNavItem(Icons.shopping_cart_outlined, 'Panier', false),
           _buildNavItem(Icons.attach_money, 'A propos', false),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAvatarNavItem(String label, bool isActive) {
+    return InkWell(
+      onTap: () {
+        if (!isActive) {
+          Get.toNamed('/profil');
+        }
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: isActive ? const Color(0xFF5B67FF) : Colors.transparent,
+                width: 2.5,
+              ),
+            ),
+            child: ClipOval(
+              child: Image.asset(
+                'design/assets/Avatar1.png',
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(
+                    Icons.person,
+                    size: 24,
+                    color: isActive ? const Color(0xFF5B67FF) : Colors.grey,
+                  );
+                },
+              ),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 10,
+              color: isActive ? const Color(0xFF5B67FF) : Colors.grey,
+              fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
+              fontFamily: 'Poppins',
+            ),
+          ),
         ],
       ),
     );

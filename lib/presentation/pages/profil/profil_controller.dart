@@ -4,7 +4,7 @@ class ProfilController extends GetxController {
   // Informations utilisateur
   final userName = 'Jean Amidou El-Adj'.obs;
   final userEmail = 'amidou1000@gmail.com'.obs;
-  final userAvatar = 'design/assets/avatar.png'.obs;
+  final userAvatar = 'design/assets/Avatar1.png'.obs;
 
   // Options du menu
   final List<Map<String, dynamic>> menuOptions = [

@@ -19,18 +19,18 @@ class _PageConnexionState extends State<PageConnexion> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-              const SizedBox(height: 60),
-              Image.asset(
-                "design/assets/NotreLogo.png",
-                width: 100,
-                height: 100,
-              ),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                Image.asset(
+                  "design/assets/NotreLogo.png",
+                  width: 60,
+                  height: 60,
+                ),
 
               const Text(
                 "TechStore",
@@ -94,7 +94,7 @@ class _PageConnexionState extends State<PageConnexion> {
                 ),
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: 50),
               SizedBox(
                 width: double.infinity,
                 height: 48,
@@ -154,6 +154,7 @@ class _PageConnexionState extends State<PageConnexion> {
             ],
           ),
         ),
+          ),
         ),
       ),
     );
