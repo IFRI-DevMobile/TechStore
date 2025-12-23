@@ -34,7 +34,7 @@ class PageInscription extends GetView<InscriptionController> {
                   ),
                 ),
                 const SizedBox(height: 48),
-
+ //champ de saisies
                 // Nom complet
                 CustomTextField(
                   controller: controller.nameController,
