@@ -34,7 +34,7 @@ class PageInscription extends GetView<InscriptionController> {
                   ),
                 ),
                 const SizedBox(height: 48),
-
+ //champ de saisies
                 // Nom complet
                 CustomTextField(
                   controller: controller.nameController,
@@ -92,7 +92,7 @@ class PageInscription extends GetView<InscriptionController> {
                 )),
 
                 const SizedBox(height: 36),
-                Obx(() => SizedBox(
+                SizedBox(
                   width: double.infinity,
                   height: 48,
                   child: ElevatedButton(
@@ -125,7 +125,7 @@ class PageInscription extends GetView<InscriptionController> {
                             ),
                           ),
                   ),
-                )),
+                ),
                 const SizedBox(height: 24),
 
                 Row(

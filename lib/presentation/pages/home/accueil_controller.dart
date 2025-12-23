@@ -30,13 +30,13 @@ class AccueilController extends GetxController {
     }
   }
 
-  // Liste des meilleures ventes - TOUTES LES VALEURS DÉFINIES
   final List<Map<String, dynamic>> bestSellers = [
     {
       'imagePath': 'design/assets/Iphone14.png',
       'title': 'iPhone 14 Pro Max | 1To | 16GB RAM',
       'price': '702.500',
       'rating': 4.6,
+      'reviews': '(128)',
       'deliveryInfo': 'Livraison gratuite',
       'freeDelivery': true,
     },
@@ -45,6 +45,7 @@ class AccueilController extends GetxController {
       'title': 'Samsung Galaxy A16 5G A Series',
       'price': '80.800',
       'rating': 3.7,
+      'reviews': '(64)',
       'deliveryInfo': 'Livraison à partir de 1.700 XOF/km',
       'freeDelivery': false,
     },
@@ -53,6 +54,7 @@ class AccueilController extends GetxController {
       'title': 'HP Victus 15 RTX 2050 | 16GB DDR5',
       'price': '702.500',
       'rating': 4.8,
+      'reviews': '(89)',
       'deliveryInfo': 'Livraison gratuite',
       'freeDelivery': true,
     },
@@ -61,6 +63,25 @@ class AccueilController extends GetxController {
       'title': 'Apple 2025 MacBook Air 256GB SSD',
       'price': '604.800',
       'rating': 4.8,
+      'reviews': '(42)',
+      'deliveryInfo': 'Livraison à partir de 2.500 XOF/km',
+      'freeDelivery': false,
+    },
+    {
+      'imagePath': 'design/assets/Macbook.png',
+      'title': 'Apple 2025 MacBook Air 256GB SSD',
+      'price': '604.800',
+      'rating': 4.8,
+      'reviews': '(42)',
+      'deliveryInfo': 'Livraison à partir de 2.500 XOF/km',
+      'freeDelivery': false,
+    },
+    {
+      'imagePath': 'design/assets/Macbook.png',
+      'title': 'Apple 2025 MacBook Air 256GB SSD',
+      'price': '604.800',
+      'rating': 4.8,
+      'reviews': '(42)',
       'deliveryInfo': 'Livraison à partir de 2.500 XOF/km',
       'freeDelivery': false,
     },
@@ -69,25 +90,23 @@ class AccueilController extends GetxController {
       'title': 'PlayStation 5 1TB | Fortnite Flowering',
       'price': '485.800',
       'rating': 4.8,
+      'reviews': '(156)',
       'deliveryInfo': 'Livraison à partir de 3.000 XOF/km',
       'freeDelivery': false,
     },
   ];
 
-  // Liste des catégories
   final List<Map<String, dynamic>> categories = [
     {'title': 'Casques'},
     {'title': 'Laptop'},
     {'title': 'Téléphones'},
     {'title': 'Consoles de Jeux'},
     {'title': 'Casques XR'},
-    {'title': 'Montres'},
   ];
 
   @override
   void onInit() {
     super.onInit();
-    // Écouter le défilement de la liste des meilleures ventes
     bestSellersScrollController.addListener(() {
       calculateScrollProgress();
     });

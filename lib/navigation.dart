@@ -12,6 +12,7 @@ import 'package:code_initial/presentation/pages/home/root_screen.dart';
 // === Import pages ===
 import 'presentation/pages/SplashScreen/page_splash.dart';
 import 'presentation/pages/auth/Connexion/page_connexion.dart';
+import 'package:code_initial/presentation/pages/auth/Connexion/connexion_controller.dart';
 import 'presentation/pages/auth/Inscription/page_inscription.dart';
 import 'package:code_initial/presentation/pages/auth/Inscription/inscription_controller.dart';
 import 'package:code_initial/presentation/pages/register/register_page.dart';
@@ -50,6 +51,7 @@ class Nav {
     GetPage(
       name: Routes.CONNEXION,
       page: () => const PageConnexion(),
+      binding: ConnexionBinding(),
     ),
     GetPage(
       name: Routes.INSCRIPTION,
