@@ -272,6 +272,13 @@ class AccueilPage extends GetView<AccueilController> {
                 image,
                 fit: BoxFit.cover,
               ),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final indicatorWidth = constraints.maxWidth * 0.3;
+                  final maxPosition = constraints.maxWidth - indicatorWidth;
+                  final position = ctrl.scrollProgress.value * maxPosition;
+                  
+                  return Stack(
             ),
           ),
           Padding(
