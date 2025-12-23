@@ -17,6 +17,19 @@ class AccueilController extends GetxController {
     isDarkMode.value = darkMode;
   }
 
+  void calculateScrollProgress() {
+    if (bestSellersScrollController.hasClients) {
+      final maxScroll = bestSellersScrollController.position.maxScrollExtent;
+      final currentScroll = bestSellersScrollController.position.pixels;
+
+      if (maxScroll > 0) {
+        scrollProgress.value = currentScroll / maxScroll;
+      } else {
+        scrollProgress.value = 0.0;
+      }
+    }
+  }
+
   // Liste des meilleures ventes - TOUTES LES VALEURS DÉFINIES
   final List<Map<String, dynamic>> bestSellers = [
     {
@@ -59,6 +72,28 @@ class AccueilController extends GetxController {
       'deliveryInfo': 'Livraison à partir de 3.000 XOF/km',
       'freeDelivery': false,
     },
+    {
+      'title': 'JBL Charge 8 | Portable Waterproof',
+      'price': '52.500',
+      'rating': 2,
+      'reviews': '(3.7)',
+      'deliveryInfo': 'Livraison à partir de 1.500 XOF/km',
+    },
+    // Ajoutez plus d'éléments pour voir l'effet du défilement
+    {
+      'title': 'Samsung Galaxy S23 Ultra',
+      'price': '650.000',
+      'rating': 4.8,
+      'reviews': '(4.8)',
+      'deliveryInfo': 'Livraison gratuite',
+    },
+    {
+      'title': 'MacBook Pro M2',
+      'price': '1.200.000',
+      'rating': 4.9,
+      'reviews': '(4.9)',
+      'deliveryInfo': 'Livraison à partir de 2.500 XOF/km',
+    },
   ];
 
   // Liste des catégories
@@ -68,12 +103,15 @@ class AccueilController extends GetxController {
     {'title': 'Téléphones'},
     {'title': 'Consoles de Jeux'},
     {'title': 'Casques XR'},
-    {'title': 'Montres'},
   ];
 
   @override
   void onInit() {
     super.onInit();
+    // Écouter le défilement de la liste des meilleures ventes
+    bestSellersScrollController.addListener(() {
+      calculateScrollProgress();
+    });
     // Ajouter le listener seulement s'il n'est pas déjà attaché
     if (!bestSellersScrollController.hasListeners) {
       bestSellersScrollController.addListener(_updateScrollProgress);
@@ -91,6 +129,8 @@ class AccueilController extends GetxController {
 
   @override
   void onClose() {
+    pageController.dispose();
+    bestSellersScrollController.dispose();
     if (bestSellersScrollController.hasListeners) {
       bestSellersScrollController.removeListener(_updateScrollProgress);
     }

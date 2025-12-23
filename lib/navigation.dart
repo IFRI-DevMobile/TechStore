@@ -9,6 +9,11 @@ import 'package:code_initial/presentation/pages/cart/cart_controller.dart';
 import 'package:code_initial/presentation/pages/home/root_screen.dart';
 
 // === Import pages ===
+import 'presentation/pages/SplashScreen/page_splash.dart';
+import 'presentation/pages/auth/Connexion/page_connexion.dart';
+import 'presentation/pages/auth/Inscription/page_inscription.dart';
+import 'package:code_initial/presentation/pages/auth/Inscription/inscription_controller.dart';
+import 'package:code_initial/presentation/pages/register/register_page.dart';
 import 'presentation/pages/splashscreen/page_splash.dart';
 import 'presentation/pages/Auth/CONNEXION/page_CONNEXION.dart';
 import 'presentation/pages/Auth/INSCRIPTION/page_INSCRIPTION.dart';
@@ -51,6 +56,9 @@ class Nav {
     GetPage(
       name: Routes.INSCRIPTION,
       page: () => const PageInscription(),
+      binding: BindingsBuilder((){
+        Get.lazyPut<InscriptionController>(() => InscriptionController());
+      }),
     ),
     GetPage(
       name: Routes.MDPFORGET,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
 import 'package:get/get.dart';
-import 'package:code_initial/presentation/pages/Auth/CONNEXION/page_CONNEXION.dart';
+import 'package:code_initial/presentation/pages/auth/Connexion/page_connexion.dart';
 
 class PageSplash extends StatelessWidget {
   const PageSplash({super.key});

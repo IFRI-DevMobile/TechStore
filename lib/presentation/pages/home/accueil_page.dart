@@ -27,6 +27,7 @@ class AccueilPage extends GetView<AccueilController> {
               const SizedBox(height: 30),
               _buildCategoriesSection(),
               const SizedBox(height: 30),
+              const SizedBox(height: 100),
             ],
           ),
         ),
@@ -63,6 +64,40 @@ class AccueilPage extends GetView<AccueilController> {
   }
 
   Widget _buildSearchBar() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        height: 50,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: Colors.grey[300]!),
+        ),
+        child: Row(
+          children: [
+            const SizedBox(width: 15),
+            Icon(
+              Icons.search,
+              color: Colors.grey[400],
+              size: 22,
+            ),
+            const SizedBox(width: 10),
+            const Expanded(
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'ex : iPhone 15 pro max',
+                  hintStyle: TextStyle(color: Colors.grey),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.zero,
+                ),
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+            const SizedBox(width: 5),
+          ],
+        ),
+      ),
+    );
     return const CustomSearchBar();
   }
 
@@ -199,8 +234,9 @@ class AccueilPage extends GetView<AccueilController> {
         ),
         const SizedBox(height: 15),
         SizedBox(
-          height: 320,
+          height: 310,
           child: ListView.builder(
+            controller: controller.bestSellersScrollController, // Ajout du contrôleur
             controller: controller.bestSellersScrollController,
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.only(left: 20, right: 10),
@@ -224,6 +260,101 @@ class AccueilPage extends GetView<AccueilController> {
             },
           ),
         ),
+        const SizedBox(height: 10),
+        // Barre de progression fonctionnelle
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Obx(() => ClipRRect(
+            borderRadius: BorderRadius.circular(2),
+            child: LinearProgressIndicator(
+              value: controller.scrollProgress.value,
+              backgroundColor: Colors.grey[300],
+              color: const Color(0xFF5B67FF), // Couleur de progression
+              minHeight: 4,
+            ),
+          )),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProductCard({
+    required String title,
+    required String price,
+    required double rating,
+    required String reviews,
+    required String deliveryInfo,
+  }) {
+    return Container(
+      width: 180,
+      margin: const EdgeInsets.only(right: 15),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.15),
+            spreadRadius: 1,
+            blurRadius: 10,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Image du produit
+          Container(
+            height: 140,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+              color: Colors.grey[100],
+            ),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+              child: Image.asset(
+                'design/assets/Iphone14.png',
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Titre
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 6),
+                // Étoiles et avis
+                Row(
+                  children: [
+                    _buildStarRating(rating),
+                    const SizedBox(width: 4),
+                    Text(
+                      reviews,
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                // Prix
+                RichText(
+                  text: TextSpan(
         const SizedBox(height: 12),
         // Indicateur de scroll horizontal
         Padding(
@@ -256,6 +387,29 @@ class AccueilPage extends GetView<AccueilController> {
                         ),
                       ),
                     ],
+                  ),
+                ),
+                const SizedBox(height: 8),
+                // Info livraison
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.green[50],
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    deliveryInfo,
+                    style: const TextStyle(
+                      fontSize: 8,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(height: 5),
+              ],
                   );
                 },
               ),
@@ -286,6 +440,7 @@ class AccueilPage extends GetView<AccueilController> {
           Wrap(
             spacing: 10,
             runSpacing: 10,
+            alignment: WrapAlignment.spaceBetween,
             children: controller.categories.map((category) {
               return _buildCategoryButton(
                 title: category['title'] ?? '',
@@ -299,9 +454,20 @@ class AccueilPage extends GetView<AccueilController> {
 
   Widget _buildCategoryButton({required String title}) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 15),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
+          colors: [
+            Color(0x98251CD9), // Couleur de début (plus claire en haut)
+            Color(0xFF251CD9), // Couleur de fin (plus foncée en bas)
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF5B67FF).withOpacity(0.4), // Opacité augmentée
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
@@ -314,8 +480,8 @@ class AccueilPage extends GetView<AccueilController> {
           BoxShadow(
             color: const Color(0xFF251CD9).withOpacity(0.3),
             spreadRadius: 0,
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+            blurRadius: 10, // Flou augmenté
+            offset: const Offset(0, 4), // Décalage léger vers le bas
           ),
         ],
       ),

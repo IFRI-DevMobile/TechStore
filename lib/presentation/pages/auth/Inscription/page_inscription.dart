@@ -2,18 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '/navigation.dart';
 import '/utils/custom_text_field.dart';
+import 'inscription_controller.dart';
 
-
-class PageInscription extends StatefulWidget {
+class PageInscription extends GetView<InscriptionController> {
   const PageInscription({super.key});
-
-  @override
-  State<PageInscription> createState() => _PageInscriptionState();
-}
-
-class _PageInscriptionState extends State<PageInscription> {
-  bool _passwordVisible = false;
-  bool _confirmPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +36,16 @@ class _PageInscriptionState extends State<PageInscription> {
                 const SizedBox(height: 48),
 
                 // Nom complet
-                const CustomTextField(
+                CustomTextField(
+                  controller: controller.nameController,
                   hintText: "Nom complet",
                   prefixIcon: Icons.person_outline,
                 ),
                 const SizedBox(height: 22),
 
                 // E-mail
-                const CustomTextField(
+                CustomTextField(
+                  controller: controller.emailController,
                   hintText: "E-mail",
                   prefixIcon: Icons.email_outlined,
                   keyboardType: TextInputType.emailAddress,
@@ -59,60 +53,69 @@ class _PageInscriptionState extends State<PageInscription> {
                 const SizedBox(height: 22),
 
                 // Mot de passe
-                CustomTextField(
+                Obx(() => CustomTextField(
+                  controller: controller.passwordController,
                   hintText: "Mot de passe",
                   prefixIcon: Icons.lock_outline,
-                  obscureText: !_passwordVisible,
+                  obscureText: !controller.isPasswordVisible.value,
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _passwordVisible
+                      controller.isPasswordVisible.value
                           ? Icons.visibility
                           : Icons.visibility_off,
                       size: 20,
                     ),
-                    onPressed: () {
-                      setState(() {
-                        _passwordVisible = !_passwordVisible;
-                      });
-                    },
+                    onPressed: () => controller.togglePasswordVisibility(),
                   ),
+                )),
+                const SizedBox(height: 16),
                 ),
                 const SizedBox(height: 22),
 
                 // Confirmer le mot de passe
-                CustomTextField(
+                Obx(() => CustomTextField(
+                  controller: controller.confirmPasswordController,
                   hintText: "Confirmer le mot de passe",
                   prefixIcon: Icons.lock_outline,
-                  obscureText: !_confirmPasswordVisible,
+                  obscureText: !controller.isConfirmPasswordVisible.value,
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _confirmPasswordVisible
+                      controller.isConfirmPasswordVisible.value
                           ? Icons.visibility
                           : Icons.visibility_off,
                       size: 20,
                     ),
-                    onPressed: () {
-                      setState(() {
-                        _confirmPasswordVisible = !_confirmPasswordVisible;
-                      });
-                    },
+                    onPressed: () => controller.toggleConfirmPasswordVisibility(),
                   ),
-                ),
+                )),
 
+                const SizedBox(height: 24),
+                Obx(() => SizedBox(
                 const SizedBox(height: 36),
                 SizedBox(
                   width: double.infinity,
                   height: 48,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: controller.isLoading.value ? null : () => controller.register(),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 37, 28, 217),
+                      backgroundColor: controller.isLoading.value
+                          ? Colors.grey
+                          : const Color.fromARGB(255, 37, 28, 217),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                       elevation: 0,
                     ),
-                    child: const Text(
+                    child: controller.isLoading.value
+                        ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                        : const Text(
                       "S'inscrire",
                       style: TextStyle(
                         color: Colors.white,
@@ -121,7 +124,7 @@ class _PageInscriptionState extends State<PageInscription> {
                       ),
                     ),
                   ),
-                ),
+                )),
                 const SizedBox(height: 24),
 
                 Row(
@@ -162,4 +165,3 @@ class _PageInscriptionState extends State<PageInscription> {
     );
   }
 }
-

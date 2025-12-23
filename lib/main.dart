@@ -3,16 +3,21 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'domain/services/ApiService.dart';
+import 'package:get_storage/get_storage.dart';
 import 'navigation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
+  await initializeDependencies();
   var initialRoute = await Routes.initialRoute;
   runApp(Main(initialRoute));
 }
 
-void initializeDependencies() {
-
+Future<void> initializeDependencies() {
+  Get.put(ApiService(), permanent: true);
+  return Future.value();
 }
 
 class Main extends StatelessWidget {
