@@ -6,8 +6,6 @@ import '/utils/custom_search_bar.dart';
 import '/utils/custom_bottom_navbar.dart';
 
 class AccueilPage extends GetView<AccueilController> {
-  @override
-  final AccueilController controller = Get.put(AccueilController());
   AccueilPage({super.key});
 
   @override
@@ -33,6 +31,7 @@ class AccueilPage extends GetView<AccueilController> {
           ),
         ),
       ),
+      bottomNavigationBar: const CustomBottomNavBar(currentRoute: '/home'),
     );
   }
 
@@ -200,7 +199,7 @@ class AccueilPage extends GetView<AccueilController> {
         ),
         const SizedBox(height: 15),
         SizedBox(
-          height: 310,
+          height: 320,
           child: ListView.builder(
             controller: controller.bestSellersScrollController,
             scrollDirection: Axis.horizontal,
@@ -208,73 +207,33 @@ class AccueilPage extends GetView<AccueilController> {
             itemCount: controller.bestSellers.length,
             itemBuilder: (context, index) {
               final product = controller.bestSellers[index];
-              return _buildProductCard(
-                title: product['title'] ?? '',
-                price: product['price'] ?? '0',
-                rating: (product['rating'] ?? 0.0).toDouble(),
-                reviews: product['reviews'] ?? '(0)',
-                deliveryInfo: product['deliveryInfo'] ?? '',
+              return Padding(
+                padding: const EdgeInsets.only(right: 15),
+                child: SizedBox(
+                  width: 180,
+                  child: ProductCard(
+                    imagePath: product['imagePath'] ?? 'design/assets/Iphone14.png',
+                    title: product['title'] ?? '',
+                    price: product['price'] ?? '0',
+                    rating: (product['rating'] ?? 0.0).toDouble(),
+                    deliveryInfo: product['deliveryInfo'] ?? '',
+                    freeDelivery: product['freeDelivery'] ?? false,
+                  ),
+                ),
               );
             },
           ),
         ),
-        const SizedBox(height: 10),
-        // Barre de progression fonctionnelle
+        const SizedBox(height: 12),
+        // Indicateur de scroll horizontal
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Obx(() => ClipRRect(
-            borderRadius: BorderRadius.circular(2),
-            child: LinearProgressIndicator(
-              value: controller.scrollProgress.value,
-              backgroundColor: Colors.grey[300],
-              color: const Color(0xFF5B67FF), // Couleur de progression
-              minHeight: 4,
-            ),
-          )),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildProductCard({
-    required String title,
-    required String price,
-    required double rating,
-    required String reviews,
-    required String deliveryInfo,
-  }) {
-    return Container(
-      width: 180,
-      margin: const EdgeInsets.only(right: 15),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.15),
-            spreadRadius: 1,
-            blurRadius: 10,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // Image du produit
-          Container(
-            height: 140,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-              color: Colors.grey[100],
-            ),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-              child: Image.asset(
-                'design/assets/Iphone14.png',
-                fit: BoxFit.cover,
+          child: GetBuilder<AccueilController>(
+            builder: (ctrl) => Container(
+              height: 4,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(2),
               ),
               child: LayoutBuilder(
                 builder: (context, constraints) {
@@ -283,115 +242,27 @@ class AccueilPage extends GetView<AccueilController> {
                   final position = ctrl.scrollProgress.value * maxPosition;
                   
                   return Stack(
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Titre
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 6),
-                // Étoiles et avis
-                Row(
-                  children: [
-                    _buildStarRating(rating),
-                    const SizedBox(width: 4),
-                    Text(
-                      reviews,
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                // Prix
-                RichText(
-                  text: TextSpan(
                     children: [
-                      TextSpan(
-                        text: price,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' XOF',
-                        style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey[600],
+                      AnimatedPositioned(
+                        duration: const Duration(milliseconds: 100),
+                        left: position,
+                        child: Container(
+                          width: indicatorWidth,
+                          height: 4,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF5B67FF),
+                            borderRadius: BorderRadius.circular(2),
+                          ),
                         ),
                       ),
                     ],
-                  ),
-                ),
-                const SizedBox(height: 8),
-                // Info livraison
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.green[50],
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    deliveryInfo,
-                    style: const TextStyle(
-                      fontSize: 8,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                const SizedBox(height: 5),
-              ],
+                  );
+                },
+              ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStarRating(double rating) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: List.generate(5, (index) {
-        if (index < rating.floor()) {
-          return const Icon(
-            Icons.star,
-            size: 13,
-            color: Colors.amber,
-          );
-        } else if (index < rating) {
-          return const Icon(
-            Icons.star_half,
-            size: 13,
-            color: Colors.amber,
-          );
-        } else {
-          return Icon(
-            Icons.star_border,
-            size: 13,
-            color: Colors.grey[400],
-          );
-        }
-      }),
+        ),
+      ],
     );
   }
 
@@ -415,7 +286,6 @@ class AccueilPage extends GetView<AccueilController> {
           Wrap(
             spacing: 10,
             runSpacing: 10,
-            alignment: WrapAlignment.spaceBetween,
             children: controller.categories.map((category) {
               return _buildCategoryButton(
                 title: category['title'] ?? '',
@@ -429,20 +299,20 @@ class AccueilPage extends GetView<AccueilController> {
 
   Widget _buildCategoryButton({required String title}) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [
-            Color(0x98251CD9), // Couleur de début (plus claire en haut)
-            Color(0xFF251CD9), // Couleur de fin (plus foncée en bas)
-          ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
+          colors: [
+            Color(0x99251CD9),
+            Color(0xFF251CD9),
+          ],
         ),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: const Color(0x665B67FF), // Opacité augmentée
+            color: const Color(0xFF251CD9).withOpacity(0.3),
             spreadRadius: 0,
             blurRadius: 8,
             offset: const Offset(0, 3),
