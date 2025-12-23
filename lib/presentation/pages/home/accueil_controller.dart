@@ -33,40 +33,44 @@ class AccueilController extends GetxController {
   // Liste des meilleures ventes - TOUTES LES VALEURS DÉFINIES
   final List<Map<String, dynamic>> bestSellers = [
     {
-      'title': 'iPhone 14 Pro Max | 1To |16GB RAM',
+      'imagePath': 'design/assets/Iphone14.png',
+      'title': 'iPhone 14 Pro Max | 1To | 16GB RAM',
       'price': '702.500',
       'rating': 4.6,
-      'reviews': '(4.6)',
       'deliveryInfo': 'Livraison gratuite',
+      'freeDelivery': true,
     },
     {
-      'title': 'JBL Charge 6 | Portable Waterproof',
-      'price': '52.500',
+      'imagePath': 'design/assets/SamsungA16.png',
+      'title': 'Samsung Galaxy A16 5G A Series',
+      'price': '80.800',
       'rating': 3.7,
-      'reviews': '(3.7)',
-      'deliveryInfo': 'Livraison à partir de 1.500 XOF/km',
+      'deliveryInfo': 'Livraison à partir de 1.700 XOF/km',
+      'freeDelivery': false,
     },
     {
-      'title': 'JBL Charge 8 | Portable Waterproof',
-      'price': '52.500',
-      'rating': 2,
-      'reviews': '(3.7)',
-      'deliveryInfo': 'Livraison à partir de 1.500 XOF/km',
-    },
-    // Ajoutez plus d'éléments pour voir l'effet du défilement
-    {
-      'title': 'Samsung Galaxy S23 Ultra',
-      'price': '650.000',
+      'imagePath': 'design/assets/Victus15.png',
+      'title': 'HP Victus 15 RTX 2050 | 16GB DDR5',
+      'price': '702.500',
       'rating': 4.8,
-      'reviews': '(4.8)',
       'deliveryInfo': 'Livraison gratuite',
+      'freeDelivery': true,
     },
     {
-      'title': 'MacBook Pro M2',
-      'price': '1.200.000',
-      'rating': 4.9,
-      'reviews': '(4.9)',
+      'imagePath': 'design/assets/Macbook.png',
+      'title': 'Apple 2025 MacBook Air 256GB SSD',
+      'price': '604.800',
+      'rating': 4.8,
       'deliveryInfo': 'Livraison à partir de 2.500 XOF/km',
+      'freeDelivery': false,
+    },
+    {
+      'imagePath': 'design/assets/Ps5.png',
+      'title': 'PlayStation 5 1TB | Fortnite Flowering',
+      'price': '485.800',
+      'rating': 4.8,
+      'deliveryInfo': 'Livraison à partir de 3.000 XOF/km',
+      'freeDelivery': false,
     },
   ];
 
@@ -77,21 +81,30 @@ class AccueilController extends GetxController {
     {'title': 'Téléphones'},
     {'title': 'Consoles de Jeux'},
     {'title': 'Casques XR'},
+    {'title': 'Montres'},
   ];
 
   @override
   void onInit() {
     super.onInit();
-    // Écouter le défilement de la liste des meilleures ventes
-    bestSellersScrollController.addListener(() {
-      calculateScrollProgress();
-    });
+    // Ajouter le listener seulement s'il n'est pas déjà attaché
+    if (!bestSellersScrollController.hasListeners) {
+      bestSellersScrollController.addListener(_updateScrollProgress);
+    }
+  }
+
+  void _updateScrollProgress() {
+    if (bestSellersScrollController.hasClients) {
+      final maxScroll = bestSellersScrollController.position.maxScrollExtent;
+      final currentScroll = bestSellersScrollController.offset;
+      scrollProgress.value = maxScroll > 0 ? currentScroll / maxScroll : 0.0;
+      update(); // Notifie GetBuilder
+    }
   }
 
   @override
   void onClose() {
     pageController.dispose();
-    bestSellersScrollController.dispose();
     super.onClose();
   }
 }

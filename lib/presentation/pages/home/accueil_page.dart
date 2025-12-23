@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'accueil_controller.dart';
+import '/utils/product_card.dart';
+import '/utils/custom_search_bar.dart';
+import '/utils/custom_bottom_navbar.dart';
 
 class AccueilPage extends GetView<AccueilController> {
   @override
@@ -26,11 +29,11 @@ class AccueilPage extends GetView<AccueilController> {
               const SizedBox(height: 30),
               _buildCategoriesSection(),
               const SizedBox(height: 30),
-              const SizedBox(height: 100),
             ],
           ),
         ),
       ),
+   //   bottomNavigationBar: const CustomBottomNavBar(currentRoute: '/home'),
     );
   }
 
@@ -62,40 +65,7 @@ class AccueilPage extends GetView<AccueilController> {
   }
 
   Widget _buildSearchBar() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Container(
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: Colors.grey[300]!),
-        ),
-        child: Row(
-          children: [
-            const SizedBox(width: 15),
-            Icon(
-              Icons.search,
-              color: Colors.grey[400],
-              size: 22,
-            ),
-            const SizedBox(width: 10),
-            const Expanded(
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'ex : iPhone 15 pro max',
-                  hintStyle: TextStyle(color: Colors.grey),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.zero,
-                ),
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
-            const SizedBox(width: 5),
-          ],
-        ),
-      ),
-    );
+    return const CustomSearchBar();
   }
 
   Widget _buildPromoCarousel() {
@@ -106,7 +76,9 @@ class AccueilPage extends GetView<AccueilController> {
           child: PageView.builder(
             controller: controller.pageController,
             onPageChanged: (index) {
-              controller.currentPromoIndex.value = index;
+              if (controller.pageController.hasClients) {
+                controller.currentPromoIndex.value = index;
+              }
             },
             itemCount: 3,
             itemBuilder: (context, index) {
@@ -231,7 +203,7 @@ class AccueilPage extends GetView<AccueilController> {
         SizedBox(
           height: 310,
           child: ListView.builder(
-            controller: controller.bestSellersScrollController, // Ajout du contrôleur
+            controller: controller.bestSellersScrollController,
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.only(left: 20, right: 10),
             itemCount: controller.bestSellers.length,
@@ -426,8 +398,9 @@ class AccueilPage extends GetView<AccueilController> {
           const Text(
             "NOS CATEGORIES DE PRODUITS",
             style: TextStyle(
-              fontSize: 18,
               fontWeight: FontWeight.bold,
+              fontFamily: "Roboto",
+              fontSize: 18,
               color: Colors.black,
               letterSpacing: 0.5,
             ),
@@ -450,7 +423,7 @@ class AccueilPage extends GetView<AccueilController> {
 
   Widget _buildCategoryButton({required String title}) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [
@@ -463,10 +436,10 @@ class AccueilPage extends GetView<AccueilController> {
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF5B67FF).withOpacity(0.4), // Opacité augmentée
+            color: const Color(0x665B67FF), // Opacité augmentée
             spreadRadius: 0,
-            blurRadius: 10, // Flou augmenté
-            offset: const Offset(0, 4), // Décalage léger vers le bas
+            blurRadius: 8,
+            offset: const Offset(0, 3),
           ),
         ],
       ),

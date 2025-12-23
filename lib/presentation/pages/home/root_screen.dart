@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'accueil_controller.dart';
 import 'accueil_page.dart';
+import '../catalogue/catalogue_page.dart';
+import '../profil/profil_page.dart';
+import '../../../navigation.dart';
 
 class RootScreen extends StatelessWidget {
   RootScreen({super.key});
@@ -16,9 +19,9 @@ class RootScreen extends StatelessWidget {
           case 0:
             return AccueilPage();
           case 1:
-            return _buildPlaceholderPage("Catalogue", Icons.category, controller);
+            return const CataloguePage();
           case 2:
-            return _buildPlaceholderPage("Mon Profil", Icons.person, controller);
+            return const ProfilPage();
           case 3:
             return _buildPlaceholderPage("Panier", Icons.shopping_cart, controller);
           case 4:
@@ -60,12 +63,16 @@ class RootScreen extends StatelessWidget {
                   activeIcon: Icons.category,
                   label: 'Catalogue',
                   isActive: controller.selectedIndex.value == 1,
-                  onTap: () => controller.changeTabIndex(1),
+                  onTap: () {
+                    Get.toNamed(Routes.CATALOGUE);
+                  },
                 ),
                 _buildNavItemWithAvatar(
                   label: 'Mon profil',
                   isActive: controller.selectedIndex.value == 2,
-                  onTap: () => controller.changeTabIndex(2),
+                  onTap: () {
+                    Get.toNamed(Routes.PROFIL);
+                  },
                 ),
                 _buildNavItem(
                   icon: Icons.shopping_cart_outlined,

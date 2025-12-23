@@ -21,14 +21,14 @@ class PageInscription extends GetView<InscriptionController> {
                 const SizedBox(height: 60),
                 Image.asset(
                   "design/assets/NotreLogo.png",
-                  width: 100,
-                  height: 100,
+                  width: 60,
+                  height: 60,
                 ),
                 const Text(
                   "TechStore",
                   style: TextStyle(
                     fontFamily: "Roboto",
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.bold,
                     fontSize: 24,
                     letterSpacing: 0.5,
                   ),
@@ -41,7 +41,7 @@ class PageInscription extends GetView<InscriptionController> {
                   hintText: "Nom complet",
                   prefixIcon: Icons.person_outline,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 22),
 
                 // E-mail
                 CustomTextField(
@@ -50,7 +50,7 @@ class PageInscription extends GetView<InscriptionController> {
                   prefixIcon: Icons.email_outlined,
                   keyboardType: TextInputType.emailAddress,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 22),
 
                 // Mot de passe
                 Obx(() => CustomTextField(
@@ -68,7 +68,7 @@ class PageInscription extends GetView<InscriptionController> {
                     onPressed: () => controller.togglePasswordVisibility(),
                   ),
                 )),
-                const SizedBox(height: 16),
+                const SizedBox(height: 22),
 
                 // Confirmer le mot de passe
                 Obx(() => CustomTextField(
@@ -87,8 +87,8 @@ class PageInscription extends GetView<InscriptionController> {
                   ),
                 )),
 
-                const SizedBox(height: 24),
-                Obx(() => SizedBox(
+                const SizedBox(height: 36),
+                SizedBox(
                   width: double.infinity,
                   height: 48,
                   child: ElevatedButton(
@@ -120,7 +120,7 @@ class PageInscription extends GetView<InscriptionController> {
                       ),
                     ),
                   ),
-                )),
+                ),
                 const SizedBox(height: 24),
 
                 Row(
