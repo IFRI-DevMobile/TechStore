@@ -100,7 +100,7 @@ class _PageConnexionState extends State<PageConnexion> {
                 height: 48,
                 child: ElevatedButton(
                   onPressed: () {
-                    Get.snackbar('Succès', 'Connexion réussie !');
+                    Get.offAllNamed(Routes.HOME);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 37, 28, 217),

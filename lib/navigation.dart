@@ -3,6 +3,10 @@ import 'package:code_initial/presentation/pages/catalogue/catalogue_page.dart';
 import 'package:code_initial/presentation/pages/catalogue/catalogue_controller.dart';
 import 'package:code_initial/presentation/pages/profil/profil_page.dart';
 import 'package:code_initial/presentation/pages/profil/profil_controller.dart';
+import 'package:code_initial/presentation/pages/home/accueil_page.dart';
+import 'package:code_initial/presentation/pages/home/accueil_controller.dart';
+import 'package:code_initial/presentation/pages/cart/cart_page.dart';
+import 'package:code_initial/presentation/pages/cart/cart_controller.dart';
 
 // === Import pages ===
 import 'presentation/pages/splashscreen/page_splash.dart';
@@ -24,8 +28,10 @@ class Routes {
   static const REGISTER = '/register';
   static const OTPCODE = "/auth/code_verification";
   static const MDPFORGET = "/auth/mot_de_passe_oublie";
+  static const HOME = '/home';
   static const CATALOGUE = '/catalogue';
   static const PROFIL = '/profil';
+  static const CART = '/cart';
 
   // ROUTE INITIALE
   static Future<String> get initialRoute async {
@@ -61,11 +67,18 @@ class Nav {
       page: () => RegisterPage(),
     ),
     GetPage(
+      name: Routes.HOME,
+      page: () => AccueilPage(),
+      binding: AccueilBinding(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
       name: Routes.CATALOGUE,
       page: () => const CataloguePage(),
       binding: BindingsBuilder(() {
         Get.lazyPut<CatalogueController>(() => CatalogueController());
       }),
+      transition: Transition.rightToLeft,
     ),
     GetPage(
       name: Routes.PROFIL,
@@ -73,7 +86,22 @@ class Nav {
       binding: BindingsBuilder(() {
         Get.lazyPut<ProfilController>(() => ProfilController());
       }),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: Routes.CART,
+      page: () => const CartPage(),
+      binding: CartBinding(),
+      transition: Transition.rightToLeft,
     ),
   ];
+}
+
+// Initialisation globale du CartController
+class AppBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(CartController(), permanent: true);
+  }
 }
 

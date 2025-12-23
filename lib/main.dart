@@ -26,6 +26,7 @@ class Main extends StatelessWidget {
       title: "TechStore",
       initialRoute: initialRoute,
       getPages: Nav.routes,
+      initialBinding: AppBinding(),
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'accueil_controller.dart';
 import '/utils/product_card.dart';
 import '/utils/custom_search_bar.dart';
+import '/utils/custom_bottom_navbar.dart';
 
 class AccueilPage extends GetView<AccueilController> {
   AccueilPage({super.key});
@@ -30,6 +31,7 @@ class AccueilPage extends GetView<AccueilController> {
           ),
         ),
       ),
+      bottomNavigationBar: const CustomBottomNavBar(currentRoute: '/home'),
     );
   }
 

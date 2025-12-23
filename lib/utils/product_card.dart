@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../presentation/pages/cart/cart_controller.dart';
 
 class ProductCard extends StatelessWidget {
   final String imagePath;
@@ -151,6 +153,34 @@ class ProductCard extends StatelessWidget {
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 32,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        final cartController = Get.find<CartController>();
+                        cartController.addToCart(
+                          imagePath: imagePath,
+                          title: title,
+                          price: price,
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF5B67FF),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: EdgeInsets.zero,
+                        elevation: 0,
+                      ),
+                      child: const Icon(
+                        Icons.add_shopping_cart,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ],
               ),
