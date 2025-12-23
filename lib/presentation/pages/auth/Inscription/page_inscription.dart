@@ -65,9 +65,6 @@ class PageInscription extends GetView<InscriptionController> {
                           : Icons.visibility_off,
                       size: 20,
                     ),
-                    onPressed: () {
-                      controller.isPasswordVisible.toggle();
-                    },
                     onPressed: () => controller.togglePasswordVisibility(),
                   ),
                 )),
@@ -86,21 +83,15 @@ class PageInscription extends GetView<InscriptionController> {
                           : Icons.visibility_off,
                       size: 20,
                     ),
-                    onPressed: () {
-                      controller.isConfirmPasswordVisible.toggle();
-                    },
                     onPressed: () => controller.toggleConfirmPasswordVisibility(),
                   ),
                 )),
 
                 const SizedBox(height: 36),
-                Obx(() => SizedBox(
+                SizedBox(
                   width: double.infinity,
                   height: 48,
                   child: ElevatedButton(
-                    onPressed: controller.isLoading.value
-                        ? null
-                        : () => controller.register(),
                     onPressed: controller.isLoading.value ? null : () => controller.register(),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: controller.isLoading.value
@@ -113,22 +104,6 @@ class PageInscription extends GetView<InscriptionController> {
                     ),
                     child: controller.isLoading.value
                         ? const SizedBox(
-                            width: 24,
-                            height: 24,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2.5,
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(Colors.white),
-                            ),
-                          )
-                        : const Text(
-                            "S'inscrire",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(
@@ -145,7 +120,7 @@ class PageInscription extends GetView<InscriptionController> {
                       ),
                     ),
                   ),
-                )),
+                ),
                 const SizedBox(height: 24),
 
                 Row(
