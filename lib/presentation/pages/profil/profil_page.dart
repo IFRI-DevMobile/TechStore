@@ -15,20 +15,91 @@ class ProfilPage extends GetView<ProfilController> {
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  _buildProfileHeader(),
-                  const SizedBox(height: 30),
-                  _buildMenuOptions(),
-                  const SizedBox(height: 20),
-                  _buildLogoutButton(),
-                ],
-              ),
+              child: Obx(() {
+                // Afficher l'indicateur de chargement
+                if (controller.isLoading.value && controller.userName.isEmpty) {
+                  return _buildLoadingState();
+                }
+
+                // Afficher le message d'erreur
+                if (controller.errorMessage.isNotEmpty) {
+                  return _buildErrorState();
+                }
+
+                // Afficher le contenu normal
+                return _buildContent();
+              }),
             ),
           ),
         ),
       ),
       bottomNavigationBar: const CustomBottomNavBar(currentRoute: '/profil'),
+    );
+  }
+
+  Widget _buildLoadingState() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(height: MediaQuery.of(Get.context!).size.height * 0.3),
+        const CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 37, 28, 217)),
+        ),
+        const SizedBox(height: 20),
+        const Text(
+          'Chargement de votre profil...',
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.grey,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildErrorState() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(height: MediaQuery.of(Get.context!).size.height * 0.3),
+        const Icon(
+          Icons.error_outline,
+          size: 60,
+          color: Colors.red,
+        ),
+        const SizedBox(height: 20),
+        Text(
+          controller.errorMessage.value,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 16,
+            color: Colors.red,
+          ),
+        ),
+       /* const SizedBox(height: 20),
+       ElevatedButton(
+          onPressed: () => controller.refreshProfile(),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 37, 28, 217),
+          ),
+          child: const Text(
+            'Réessayer',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),*/
+      ],
+    );
+  }
+
+  Widget _buildContent() {
+    return Column(
+      children: [
+        _buildProfileHeader(),
+        const SizedBox(height: 30),
+        _buildMenuOptions(),
+        const SizedBox(height: 20),
+        _buildLogoutButton(),
+      ],
     );
   }
 
@@ -51,7 +122,7 @@ class ProfilPage extends GetView<ProfilController> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Avatar
-          Container(
+          Obx(() => Container(
             width: 100,
             height: 100,
             decoration: BoxDecoration(
@@ -59,42 +130,57 @@ class ProfilPage extends GetView<ProfilController> {
               color: const Color(0xFFFCE4D8),
             ),
             child: ClipOval(
-              child: Image.asset(
-                "design/assets/Avatar1.png",
+              child: controller.userAvatar.value.isNotEmpty
+                  ? Image.asset(
+                controller.userAvatar.value,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
-                  return Icon(
-                    Icons.person,
-                    size: 50,
-                    color: Colors.grey[400],
-                  );
+                  return _buildDefaultAvatar();
                 },
-              ),
+              )
+                  : _buildDefaultAvatar(),
             ),
-          ),
+          )),
           const SizedBox(height: 16),
           // Nom
-          Text(
-            controller.userName.value,
+          Obx(() => Text(
+            controller.userName.value.isNotEmpty
+                ? controller.userName.value
+                : 'Utilisateur',
             style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
               fontFamily: 'Poppins',
               color: Colors.black,
             ),
-          ),
+          )),
           const SizedBox(height: 4),
           // Email
-          Text(
+          Obx(() => Text(
             controller.userEmail.value,
             style: TextStyle(
               fontSize: 14,
               color: Colors.grey[600],
               fontFamily: 'Poppins',
             ),
-          ),
+          )),
+         /* const SizedBox(height: 16),
+          // Bouton pour rafraîchir
+          IconButton(
+            onPressed: () => controller.refreshProfile(),
+            icon: const Icon(Icons.refresh, color: Colors.blue),
+            tooltip: 'Rafraîchir',
+          ),*/
         ],
       ),
+    );
+  }
+
+  Widget _buildDefaultAvatar() {
+    return const Icon(
+      Icons.person,
+      size: 50,
+      color: Colors.grey,
     );
   }
 
@@ -192,28 +278,38 @@ class ProfilPage extends GetView<ProfilController> {
   }
 
   Widget _buildLogoutButton() {
-    return InkWell(
-      onTap: controller.logout,
+    return Obx(() => InkWell(
+      onTap: controller.isLoading.value ? null : () => controller.logout(),
       borderRadius: BorderRadius.circular(12),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
-          color: const Color(0xFFE53935),
+          color: controller.isLoading.value ? Colors.grey : const Color(0xFFE53935),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.logout,
-              color: Colors.white,
-              size: 20,
-            ),
+            if (controller.isLoading.value)
+              const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              )
+            else
+              const Icon(
+                Icons.logout,
+                color: Colors.white,
+                size: 20,
+              ),
             const SizedBox(width: 8),
-            const Text(
-              'Deconnexion',
-              style: TextStyle(
+            Text(
+              controller.isLoading.value ? 'Déconnexion...' : 'Déconnexion',
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: Colors.white,
@@ -223,7 +319,7 @@ class ProfilPage extends GetView<ProfilController> {
           ],
         ),
       ),
-    );
+    ));
   }
 
   IconData _getIconData(String iconName) {
