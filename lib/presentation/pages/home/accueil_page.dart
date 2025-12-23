@@ -33,6 +33,7 @@ class AccueilPage extends GetView<AccueilController> {
           ),
         ),
       ),
+      bottomNavigationBar: const CustomBottomNavBar(currentRoute: '/home'),
     );
   }
 
@@ -201,42 +202,37 @@ class AccueilPage extends GetView<AccueilController> {
         const SizedBox(height: 15),
         SizedBox(
           height: 310,
-          child: ListView.builder(
+          child: Scrollbar(
             controller: controller.bestSellersScrollController,
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.only(left: 20, right: 10),
-            itemCount: controller.bestSellers.length,
-            itemBuilder: (context, index) {
-              final product = controller.bestSellers[index];
-              return _buildProductCard(
-                title: product['title'] ?? '',
-                price: product['price'] ?? '0',
-                rating: (product['rating'] ?? 0.0).toDouble(),
-                reviews: product['reviews'] ?? '(0)',
-                deliveryInfo: product['deliveryInfo'] ?? '',
-              );
-            },
-          ),
-        ),
-        const SizedBox(height: 10),
-        // Barre de progression fonctionnelle
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Obx(() => ClipRRect(
-            borderRadius: BorderRadius.circular(2),
-            child: LinearProgressIndicator(
-              value: controller.scrollProgress.value,
-              backgroundColor: Colors.grey[300],
-              color: const Color(0xFF5B67FF), // Couleur de progression
-              minHeight: 4,
+            thumbVisibility: true, // Rend le scrollbar toujours visible
+            thickness: 8, // Épaisseur du scrollbar
+            radius: const Radius.circular(25), // Arrondi des bords
+            child:
+            ListView.builder(
+              controller: controller.bestSellersScrollController,
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.only(left: 20, right: 10, bottom: 10),
+              itemCount: controller.bestSellers.length,
+              itemBuilder: (context, index) {
+                final product = controller.bestSellers[index];
+                return _buildProductCard(
+                  title: product['title'] ?? '',
+                  image: product['imagePath'],
+                  price: product['price'] ?? '0',
+                  rating: (product['rating'] ?? 0.0).toDouble(),
+                  reviews: product['reviews'] ?? '(0)',
+                  deliveryInfo: product['deliveryInfo'] ?? '',
+                );
+              },
             ),
-          )),
+
+          ),
         ),
       ],
     );
   }
-
   Widget _buildProductCard({
+    required String image,
     required String title,
     required String price,
     required double rating,
@@ -273,7 +269,7 @@ class AccueilPage extends GetView<AccueilController> {
             child: ClipRRect(
               borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
               child: Image.asset(
-                'design/assets/Iphone14.png',
+                image,
                 fit: BoxFit.cover,
               ),
             ),
