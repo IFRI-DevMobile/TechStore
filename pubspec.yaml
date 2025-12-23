@@ -31,6 +31,8 @@ dependencies:
   another_flutter_splash_screen:
   pinput: ^6.0.1
   flutter_svg: ^2.2.3
+  dio: ^5.9.0
+  get_storage: ^2.1.1
 
 
 dev_dependencies:

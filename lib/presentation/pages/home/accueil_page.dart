@@ -26,7 +26,6 @@ class AccueilPage extends GetView<AccueilController> {
               const SizedBox(height: 30),
               _buildCategoriesSection(),
               const SizedBox(height: 30),
-              _buildThemeToggle(),
               const SizedBox(height: 100),
             ],
           ),
@@ -92,7 +91,6 @@ class AccueilPage extends GetView<AccueilController> {
                 style: TextStyle(fontSize: 16),
               ),
             ),
-
             const SizedBox(width: 5),
           ],
         ),
@@ -231,8 +229,9 @@ class AccueilPage extends GetView<AccueilController> {
         ),
         const SizedBox(height: 15),
         SizedBox(
-          height: 320,
+          height: 310,
           child: ListView.builder(
+            controller: controller.bestSellersScrollController, // Ajout du contrôleur
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.only(left: 20, right: 10),
             itemCount: controller.bestSellers.length,
@@ -247,6 +246,20 @@ class AccueilPage extends GetView<AccueilController> {
               );
             },
           ),
+        ),
+        const SizedBox(height: 10),
+        // Barre de progression fonctionnelle
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Obx(() => ClipRRect(
+            borderRadius: BorderRadius.circular(2),
+            child: LinearProgressIndicator(
+              value: controller.scrollProgress.value,
+              backgroundColor: Colors.grey[300],
+              color: const Color(0xFF5B67FF), // Couleur de progression
+              minHeight: 4,
+            ),
+          )),
         ),
       ],
     );
@@ -276,6 +289,7 @@ class AccueilPage extends GetView<AccueilController> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Image du produit
           Container(
@@ -293,7 +307,6 @@ class AccueilPage extends GetView<AccueilController> {
               ),
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.all(12),
             child: Column(
@@ -306,13 +319,11 @@ class AccueilPage extends GetView<AccueilController> {
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: Colors.black,
-                    height: 1.3,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 6),
-
                 // Étoiles et avis
                 Row(
                   children: [
@@ -328,7 +339,6 @@ class AccueilPage extends GetView<AccueilController> {
                   ],
                 ),
                 const SizedBox(height: 8),
-
                 // Prix
                 RichText(
                   text: TextSpan(
@@ -353,7 +363,6 @@ class AccueilPage extends GetView<AccueilController> {
                   ),
                 ),
                 const SizedBox(height: 8),
-
                 // Info livraison
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -372,18 +381,7 @@ class AccueilPage extends GetView<AccueilController> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                const SizedBox(height: 8),
-
-                // Barre de progression
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(2),
-                  child: LinearProgressIndicator(
-                    value: 0.65,
-                    backgroundColor: Colors.grey[300],
-                    color: Colors.grey[500],
-                    minHeight: 4,
-                  ),
-                ),
+                const SizedBox(height: 5),
               ],
             ),
           ),
@@ -438,6 +436,7 @@ class AccueilPage extends GetView<AccueilController> {
           Wrap(
             spacing: 10,
             runSpacing: 10,
+            alignment: WrapAlignment.spaceBetween,
             children: controller.categories.map((category) {
               return _buildCategoryButton(
                 title: category['title'] ?? '',
@@ -451,16 +450,23 @@ class AccueilPage extends GetView<AccueilController> {
 
   Widget _buildCategoryButton({required String title}) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 15),
       decoration: BoxDecoration(
-        color: const Color(0xFF5B67FF),
-        borderRadius: BorderRadius.circular(25),
+        gradient: const LinearGradient(
+          colors: [
+            Color(0x98251CD9), // Couleur de début (plus claire en haut)
+            Color(0xFF251CD9), // Couleur de fin (plus foncée en bas)
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+        borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF5B67FF).withOpacity(0.3),
+            color: const Color(0xFF5B67FF).withOpacity(0.4), // Opacité augmentée
             spreadRadius: 0,
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+            blurRadius: 10, // Flou augmenté
+            offset: const Offset(0, 4), // Décalage léger vers le bas
           ),
         ],
       ),
@@ -471,134 +477,6 @@ class AccueilPage extends GetView<AccueilController> {
           fontWeight: FontWeight.w600,
           color: Colors.white,
         ),
-      ),
-    );
-  }
-
-  Widget _buildThemeToggle() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        children: [
-          // Ligne de séparation
-          Container(
-            height: 2,
-            color: Colors.grey[300],
-            margin: const EdgeInsets.only(bottom: 30),
-          ),
-
-          const Text(
-            "Personnalisez votre interface",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 30),
-
-          Obx(() => Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Mode Sombre
-              GestureDetector(
-                onTap: () => controller.setTheme(true),
-                child: Column(
-                  children: [
-                    Container(
-                      width: 70,
-                      height: 70,
-                      decoration: BoxDecoration(
-                        color: controller.isDarkMode.value
-                            ? const Color(0xFF5B67FF)
-                            : Colors.white,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.grey[300]!,
-                          width: 2,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 8,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Icon(
-                        Icons.dark_mode,
-                        color: controller.isDarkMode.value
-                            ? Colors.white
-                            : Colors.grey[700],
-                        size: 35,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      controller.isDarkMode.value ? "Mode Sombre (active)" : "Mode Sombre",
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey[800],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(width: 60),
-
-              // Mode Clair
-              GestureDetector(
-                onTap: () => controller.setTheme(false),
-                child: Column(
-                  children: [
-                    Container(
-                      width: 70,
-                      height: 70,
-                      decoration: BoxDecoration(
-                        color: !controller.isDarkMode.value
-                            ? const Color(0xFF5B67FF)
-                            : Colors.white,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.grey[300]!,
-                          width: 2,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 8,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Icon(
-                        Icons.light_mode,
-                        color: !controller.isDarkMode.value
-                            ? Colors.white
-                            : Colors.grey[700],
-                        size: 35,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      !controller.isDarkMode.value ? "Mode Clair (active)" : "Mode Clair",
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey[800],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          )),
-        ],
       ),
     );
   }
